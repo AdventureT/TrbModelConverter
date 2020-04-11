@@ -302,6 +302,22 @@ unsigned long long Reader::ReadULongLong(FILE* f)
 		return read;
 	}
 
+	std::wstring Reader::ReadUnicodeString(FILE* f)
+	{
+		wchar_t uChar;
+		std::wstring uStr;
+		do
+		{
+			fread_s(&uChar, 2, 2, 1, f);
+			if (uChar == '\0')
+			{
+				break;
+			}
+			uStr.push_back(uChar);
+		} while (true);
+		return uStr;
+	}
+
 	std::wstring Reader::ReadUnicodeString(FILE* f, int chars)
 	{
 		uint8_t uBytes[2];

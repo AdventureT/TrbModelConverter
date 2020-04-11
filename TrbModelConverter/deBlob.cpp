@@ -60,7 +60,6 @@ void deBlob::read(FILE* f, Reader::Endian endian, std::string filename, System::
 		}
 		else if (tsfl.symb.nameOffsets[x].name == "LocaleStrings")
 		{
-			std::vector<std::string> strings;
 			uint32_t stringCount = ReadUInt(f);
 			fseek(f, chunk, SEEK_SET);
 			for (size_t i = 0; i < stringCount; i++)
@@ -68,9 +67,17 @@ void deBlob::read(FILE* f, Reader::Endian endian, std::string filename, System::
 				uint32_t stringOffset = ReadUInt(f);
 				long rt = ftell(f);
 				fseek(f, stringOffset + chunk, SEEK_SET);
-				strings.push_back(ReadString(f));
+				uint16_t c = ReadUShort(f);
+				fseek(f, -2, SEEK_CUR);
+				if (c > 0xFF) // ASCII
+				{
+					lv->Items->Add(gcnew System::String(ReadString(f).c_str()));
+				}
+				else // Unicode
+				{
+					lv->Items->Add(gcnew System::String(ReadUnicodeString(f).c_str()));
+				}
 				fseek(f, rt, SEEK_SET);
-				lv->Items->Add(gcnew System::String(strings[i].c_str()));
 			}
 		}
 		else if (tsfl.symb.nameOffsets[x].name == "txui") // Most hackiest shit i have ever sawn! This is Big Endian!

@@ -68,6 +68,7 @@ namespace CppCLRWinformsProjekt {
 	private: System::ComponentModel::BackgroundWorker^ backgroundWorker1;
 	private: System::Windows::Forms::ListView^ listView1;
 	private: System::Windows::Forms::ColumnHeader^ columnHeader1;
+	private: System::Windows::Forms::Button^ button2;
 
 
 		   List<System::String^>^ meshNamebelong = gcnew List<System::String^>();
@@ -89,6 +90,7 @@ namespace CppCLRWinformsProjekt {
 			this->backgroundWorker1 = (gcnew System::ComponentModel::BackgroundWorker());
 			this->listView1 = (gcnew System::Windows::Forms::ListView());
 			this->columnHeader1 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// openFileDialog1
@@ -185,6 +187,16 @@ namespace CppCLRWinformsProjekt {
 			this->columnHeader1->Text = L"";
 			this->columnHeader1->Width = 500;
 			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(257, 286);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(104, 23);
+			this->button2->TabIndex = 6;
+			this->button2->Text = L"Copy to Clipboard";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &Form1::button2_Click);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -192,6 +204,7 @@ namespace CppCLRWinformsProjekt {
 			this->BackColor = System::Drawing::SystemColors::Control;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(854, 518);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->listView1);
 			this->Controls->Add(this->checkedListBox1);
 			this->Controls->Add(this->progressBar1);
@@ -1072,6 +1085,26 @@ private: System::Void listView1_SelectedIndexChanged(System::Object^ sender, Sys
 }
 private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 
+}
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	ListView::SelectedListViewItemCollection^ selectedItems = listView1->SelectedItems;
+	if (selectedItems->Count == 0)
+	{
+		return;
+	}
+	String^ text = "";
+	for each(ListViewItem^ item in selectedItems)
+	{
+		if (selectedItems->Count == 1)
+		{
+			text = item->Text;
+		}
+		else
+		{
+			text += item->Text + " ";
+		}
+	}
+	Clipboard::SetText(text);
 }
 };
 }

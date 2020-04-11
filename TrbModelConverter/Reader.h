@@ -12,7 +12,6 @@
 			BIG
 		} e;
 
-
 	public:
 		char ReadByte(FILE* f);
 
@@ -42,6 +41,5 @@
 
 		std::string ReadString(FILE* f);
 		std::string ReadString(FILE* f, int chars);
+		std::wstring ReadUnicodeString(FILE* f, int chars);
 	};
-
-

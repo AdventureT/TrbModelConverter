@@ -79,9 +79,11 @@ void deBlob::read(FILE* f, Reader::Endian endian, std::string filename, System::
 			uint32_t fileNameOffset = ReadUInt(f);
 			fseek(f, fileNameOffset + chunk, SEEK_SET);
 			std::string fileName = ReadString(f);
-			lv->Items->Add(gcnew System::String(fileName.c_str()));
+			System::Windows::Forms::ListViewItem^ lvi = gcnew System::Windows::Forms::ListViewItem(gcnew System::String(fileName.c_str()));
+			lvi->Font = gcnew System::Drawing::Font(lvi->Font, System::Drawing::FontStyle::Bold);
+			lv->Items->Add(lvi);
 			fseek(f, tsfl.hdrx.tagInfos[tsfl.symb.nameOffsets[x].ID].tagSize + baseChunk, SEEK_SET);
-			std::string XUIB = ReadString(f, 4); // Maybe its 3???
+			std::string XUIB = ReadString(f, 4);
 			Reader::e = Reader::BIG;
 			uint32_t unknown1 = ReadUInt(f);
 			uint32_t unknown2 = ReadUInt(f);
@@ -102,10 +104,10 @@ void deBlob::read(FILE* f, Reader::Endian endian, std::string filename, System::
 				{
 					long remember = ftell(f);
 					fseek(f, tsfl.hdrx.tagInfos[tsfl.symb.nameOffsets[x].ID].tagSize + baseChunk + subLabelOffset, SEEK_SET);
-					while (ftell(f) < subLabelSize + tsfl.hdrx.tagInfos[tsfl.symb.nameOffsets[x].ID].tagSize + chunk)
+					while (ftell(f) < subLabelSize + tsfl.hdrx.tagInfos[tsfl.symb.nameOffsets[x].ID].tagSize + baseChunk)
 					{
 						uint16_t charCount = ReadUShort(f);
-						std::string str = ReadString(f, charCount);
+						std::wstring str = ReadUnicodeString(f, charCount);
 						lv->Items->Add(gcnew System::String(str.c_str()));
 					}
 					fseek(f, remember, SEEK_SET);

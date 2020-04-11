@@ -69,6 +69,7 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::ListView^ listView1;
 	private: System::Windows::Forms::ColumnHeader^ columnHeader1;
 
+
 		   List<System::String^>^ meshNamebelong = gcnew List<System::String^>();
 
 #pragma region Windows Form Designer generated code
@@ -96,29 +97,35 @@ namespace CppCLRWinformsProjekt {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(325, 305);
+			this->button1->FlatAppearance->BorderColor = System::Drawing::Color::Black;
+			this->button1->FlatAppearance->MouseOverBackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)),
+				static_cast<System::Int32>(static_cast<System::Byte>(128)), static_cast<System::Int32>(static_cast<System::Byte>(128)));
+			this->button1->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->button1->Location = System::Drawing::Point(321, 330);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(180, 23);
 			this->button1->TabIndex = 0;
 			this->button1->Text = L"Open trb file and Convert";
-			this->button1->UseVisualStyleBackColor = true;
+			this->button1->UseVisualStyleBackColor = false;
 			this->button1->Click += gcnew System::EventHandler(this, &Form1::Button1_Click);
 			// 
 			// radioButton1
 			// 
 			this->radioButton1->AutoSize = true;
+			this->radioButton1->ForeColor = System::Drawing::SystemColors::WindowText;
 			this->radioButton1->Location = System::Drawing::Point(56, 70);
 			this->radioButton1->Name = L"radioButton1";
 			this->radioButton1->Size = System::Drawing::Size(83, 17);
 			this->radioButton1->TabIndex = 1;
 			this->radioButton1->TabStop = true;
 			this->radioButton1->Text = L"Little Endian";
-			this->radioButton1->UseVisualStyleBackColor = true;
+			this->radioButton1->UseVisualStyleBackColor = false;
 			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &Form1::radioButton1_CheckedChanged);
 			// 
 			// radioButton2
 			// 
 			this->radioButton2->AutoSize = true;
+			this->radioButton2->ForeColor = System::Drawing::SystemColors::WindowText;
 			this->radioButton2->Location = System::Drawing::Point(56, 94);
 			this->radioButton2->Name = L"radioButton2";
 			this->radioButton2->Size = System::Drawing::Size(76, 17);
@@ -129,6 +136,8 @@ namespace CppCLRWinformsProjekt {
 			// 
 			// comboBox1
 			// 
+			this->comboBox1->BackColor = System::Drawing::SystemColors::Window;
+			this->comboBox1->ForeColor = System::Drawing::SystemColors::WindowText;
 			this->comboBox1->FormattingEnabled = true;
 			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
 				L"de Blob", L"Nicktoons Attack of the Toybots",
@@ -150,6 +159,7 @@ namespace CppCLRWinformsProjekt {
 			// 
 			// checkedListBox1
 			// 
+			this->checkedListBox1->BackColor = System::Drawing::SystemColors::Control;
 			this->checkedListBox1->FormattingEnabled = true;
 			this->checkedListBox1->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Extract Models", L"Extract Textures" });
 			this->checkedListBox1->Location = System::Drawing::Point(12, 410);
@@ -162,7 +172,7 @@ namespace CppCLRWinformsProjekt {
 			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(1) { this->columnHeader1 });
 			this->listView1->GridLines = true;
 			this->listView1->HideSelection = false;
-			this->listView1->Location = System::Drawing::Point(281, 14);
+			this->listView1->Location = System::Drawing::Point(257, 12);
 			this->listView1->Name = L"listView1";
 			this->listView1->Size = System::Drawing::Size(541, 267);
 			this->listView1->TabIndex = 3;
@@ -179,6 +189,7 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::SystemColors::Control;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(854, 518);
 			this->Controls->Add(this->listView1);
@@ -188,6 +199,7 @@ namespace CppCLRWinformsProjekt {
 			this->Controls->Add(this->radioButton2);
 			this->Controls->Add(this->radioButton1);
 			this->Controls->Add(this->button1);
+			this->ForeColor = System::Drawing::SystemColors::WindowText;
 			this->Name = L"Form1";
 			this->Text = L"TrbModelConverter v1.5.1";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
@@ -241,8 +253,6 @@ namespace CppCLRWinformsProjekt {
 			{
 				_fileName = (char*)(void*)Marshal::StringToHGlobalAnsi(file);
 				Trb trb(_fileName, e, progressBar1, listView1, game);
-				unsigned char* img;
-				Bitmap^ bmp = gcnew Bitmap(30, 30, 30, System::Drawing::Imaging::PixelFormat::Format24bppRgb, (IntPtr)img);
 				if (MessageBox::Show("File " + file + " has been succesfully extracted!", "Success", MessageBoxButtons::OK, MessageBoxIcon::Information) == Windows::Forms::DialogResult::OK)
 				{
 					progressBar1->Value = 0;
@@ -1059,6 +1069,9 @@ private: System::Void radioButton1_CheckedChanged(System::Object^ sender, System
 private: System::Void progressBar1_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void listView1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+
 }
 };
 }

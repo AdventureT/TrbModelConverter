@@ -294,22 +294,35 @@ unsigned long long Reader::ReadULongLong(FILE* f)
 		char c2 = '\0';
 		fread_s(&c2, 1, 1, 1, f);
 		fseek(f, -2, SEEK_CUR);
-		if (c1 != '\0' && c2 != '\0')
+		for (int i = 0; i < chars; i++)
+		{
+			fread_s(&c, 1, 1, 1, f);
+			read.push_back(c);
+		}
+		return read;
+	}
+
+	std::wstring Reader::ReadUnicodeString(FILE* f, int chars)
+	{
+		uint8_t uBytes[2];
+		wchar_t uChar;
+		std::wstring uStr;
+		if (e == Reader::Endian::LITTLE)
 		{
 			for (int i = 0; i < chars; i++)
 			{
-				fread_s(&c, 1, 1, 1, f);
-				read.push_back(c);
+				fread_s(&uChar, 2, 2, 1, f);
+				uStr.push_back(uChar);
 			}
 		}
 		else
 		{
 			for (int i = 0; i < chars; i++)
 			{
-				fread_s(&c, 1, 1, 1, f);
-				fread_s(&c, 1, 1, 1, f);
-				read.push_back(c);
+				fread_s(uBytes, 2, 2, 1, f);
+				uChar = static_cast<wchar_t>((uBytes[1]) | (uBytes[0] << 8));
+				uStr.push_back(uChar);
 			}
 		}
-		return read;
+		return uStr;
 	}
